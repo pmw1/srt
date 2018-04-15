@@ -61,7 +61,7 @@ def buildSendEntrypoint(mode):
 		srt_entrypoint.write(bytes("/home/srt/srt-live-transmit -s:5000 -r:5000 -v udp://0.0.0.0:" + internal_port + "/?mode=client srt://" + target + ":" + port, 'UTF-8'))
 	if(mode == "server"):
 		print('Server Mode is Active (listening for connection)')
-		srt_entrypoint.write(bytes("/home/srt/srt-live-transmit -s:5000 -r:5000 -v srt://@:" + port + "/?mode=server " + "udp://10.0.10.4:" + internal_port, 'UTF-8'))	
+		srt_entrypoint.write(bytes("/home/srt/srt-live-transmit -s:5000 -r:5000 -v srt://@:" + port + "/?mode=server udp://10.0.10.4:" + internal_port, 'UTF-8'))	
 	srt_entrypoint.close()
 
 	os.chmod('hostfiles/entrypoint.sh', stat.S_IXOTH)
@@ -82,7 +82,7 @@ def initDocker():
 	srt_docker.write(bytes('--ip=\"10.0.10.2\" ', 'UTF-8'))
 	srt_docker.write(bytes('--name=\'srt\' ', 'UTF-8'))
 	srt_docker.write(bytes('--privileged -i -t  ', 'UTF-8'))
-	##srt_docker.write(bytes("--entrypoint=\"/bin/bash\" " ,'UTF-8'))
+	srt_docker.write(bytes("--entrypoint=\"/bin/bash\" " ,'UTF-8'))
 	srt_docker.write(bytes(' pmw1/srt\n\n ', 'UTF-8'))
 	srt_docker.close()
 
