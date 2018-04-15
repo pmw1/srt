@@ -77,6 +77,7 @@ def initDocker():
 	srt_docker.write(bytes('sudo docker rm -f srt\n', 'UTF-8'))
 	srt_docker.write(bytes('sudo docker run ', 'UTF-8'))
 	srt_docker.write(bytes('-v /home/' + user + '/apps/srt/hostfiles/:/hostfiles ', 'UTF-8'))
+	srt_docker.write(bytes('-p {}:{}/udp '.format(port, port), 'UTF-8'))
 	srt_docker.write(bytes('-p 4444:4444/udp  ', 'UTF-8'))
 	srt_docker.write(bytes('--network=\"split\" ', 'UTF-8'))
 	srt_docker.write(bytes('--ip=\"10.0.10.2\" ', 'UTF-8'))
