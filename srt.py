@@ -9,6 +9,7 @@ user=os.getlogin()
 hostname=socket.gethostname()
 srt_ip='10.0.10.2'
 internal_port='4444'
+vlc_port='4443'
 
 if __name__ == "__main__":
 	import argparse
@@ -61,7 +62,7 @@ def buildSendEntrypoint(mode):
 		srt_entrypoint.write(bytes("/home/srt/srt-live-transmit -s:5000 -r:5000 -v udp://0.0.0.0:" + internal_port + "/?mode=client srt://" + target + ":" + port, 'UTF-8'))
 	if(mode == "server"):
 		print('Server Mode is Active (listening for connection)')
-		srt_entrypoint.write(bytes("/home/srt/srt-live-transmit -s:5000 -r:5000 -v srt://@:" + port + "/?mode=server udp://10.0.10.4:" + internal_port, 'UTF-8'))	
+		srt_entrypoint.write(bytes("/home/srt/srt-live-transmit -s:5000 -r:5000 -v srt://@:" + vlc_port + "/?mode=server udp://10.0.10.4:" + vlc_port, 'UTF-8'))	
 	srt_entrypoint.close()
 
 	os.chmod('hostfiles/entrypoint.sh', stat.S_IXOTH)
@@ -79,6 +80,7 @@ def initDocker():
 	srt_docker.write(bytes('-v /home/' + user + '/apps/srt/hostfiles/:/hostfiles ', 'UTF-8'))
 	srt_docker.write(bytes('-p {}:{}/udp '.format(port, port), 'UTF-8'))
 	srt_docker.write(bytes('-p 4444:4444/udp  ', 'UTF-8'))
+	srt_docker.write(bytes('-p 4443:4443/udp  ', 'UTF-8'))
 	srt_docker.write(bytes('--network=\"split\" ', 'UTF-8'))
 	srt_docker.write(bytes('--ip=\"10.0.10.2\" ', 'UTF-8'))
 	srt_docker.write(bytes('--name=\'srt\' ', 'UTF-8'))
